@@ -7,7 +7,7 @@ Persian Live Gold Price for WooCommerce (`live-gold-price`) automates real-time 
 ## Curated Resources
 - [Full Documentation](llms-full.txt): Complete technical architecture, database schemas, full hooks and filters reference, and production code recipes.
 - [WordPress.org Plugin Directory](https://wordpress.org/plugins/live-gold-price/): Official releases, changelogs, and user reviews.
-- [GitHub Repository](https://github.com/thekourox/live-gold-price): Source code, issues, and development discussions.
+- [GitHub Repository](https://github.com/amirmarandidev/woocommerce-live-gold-price): Source code, issues, and development discussions.
 
 ## Core Semantic Capabilities
 - **Real-Time API Polling:** Connects to gold market endpoints (defaulting to `api.brsapi.ir`) via background WP-Cron at 1-minute intervals.

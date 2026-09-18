@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name:       Live Gold Price
- * Plugin URI:        https://github.com/thekourox/live-gold-price
+ * Plugin URI:        https://github.com/amirmarandidev/woocommerce-live-gold-price
  * Description:       افزونه فارسی اتصال آنلاین به وب‌سرویس‌های قیمت لحظه‌ای طلا و محاسبه قیمت لحظه‌ای محصولات در ووکامرس.
  * Version:           1.5.3
  * Requires at least: 5.8
