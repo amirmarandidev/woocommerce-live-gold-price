@@ -1,140 +1,140 @@
 <p align="center">
-  <img src="assets/icon-256x256.png" width="128" height="128" alt="Persian Live Gold Price Logo" style="border-radius: 20px;">
+  <img src="assets/icon-256x256.png" width="128" height="128" alt="لوگوی افزونه قیمت لحظه‌ای طلا" style="border-radius: 20px;">
 </p>
 
-# Persian Live Gold Price for WooCommerce | افزونه قیمت لحظه‌ای طلا و سکه ووکامرس
+# افزونه قیمت لحظه‌ای طلا و سکه برای ووکامرس | Live Gold Price
 
 <p align="center">
-  <img src="assets/banner-1544x500.jpg" alt="Persian Live Gold Price Banner" width="100%">
+  <img src="assets/banner-1544x500.jpg" alt="بنر افزونه قیمت لحظه‌ای طلا" width="100%">
 </p>
 
-[![WordPress Plugin Version](https://img.shields.io/badge/WordPress.org-v1.5.3-blue.svg)](https://wordpress.org/plugins/live-gold-price/)
-[![Tested up to WordPress](https://img.shields.io/badge/WordPress-5.8%20--%207.1-brightgreen.svg)](https://wordpress.org/plugins/live-gold-price/)
-[![PHP Version](https://img.shields.io/badge/PHP-7.4%20--%208.3-indigo.svg)](https://wordpress.org/plugins/live-gold-price/)
-[![License](https://img.shields.io/badge/License-GPLv2%2B-orange.svg)](https://www.gnu.org/licenses/gpl-2.0.html)
-[![WooCommerce HPOS](https://img.shields.io/badge/WooCommerce-HPOS%20Ready-success.svg)](https://woocommerce.com/)
+[![نسخه در مخزن وردپرس](https://img.shields.io/badge/WordPress.org-v1.5.3-blue.svg)](https://wordpress.org/plugins/live-gold-price/)
+[![سازگار با وردپرس](https://img.shields.io/badge/%D9%88%D8%B1%D8%AF%D9%BE%D8%B1%D8%B3-5.8%20--%207.1-brightgreen.svg)](https://wordpress.org/plugins/live-gold-price/)
+[![نسخه PHP](https://img.shields.io/badge/PHP-7.4%20--%208.3-indigo.svg)](https://wordpress.org/plugins/live-gold-price/)
+[![لایسنس](https://img.shields.io/badge/%D9%84%D8%A7%DB%8C%D8%B3%D9%86%D8%B3-GPLv2%2B-orange.svg)](https://www.gnu.org/licenses/gpl-2.0.html)
+[![سازگار با HPOS](https://img.shields.io/badge/WooCommerce-HPOS%20Ready-success.svg)](https://woocommerce.com/)
 
-**Persian Live Gold Price for WooCommerce** یک افزونه تخصصی، امن و استاندارد جهت اتصال مستقیم فروشگاه‌های اینترنتی طلا و جواهر به وب‌سرویس‌های رسمی استعلام نرخ لحظه‌ای طلا و انواع مسکوکات بانکی است. این افزونه قیمت تمامی محصولات ساده و متغیر را مطابق فرمول‌های مصوب اتحادیه طلا (وزن، اجرت ساخت، سود فروشنده و مالیات بر ارزش افزوده) به‌صورت خودکار در صفحه محصول، سبد خرید و برگه پرداخت به‌روزرسانی می‌کند.
+**افزونه قیمت لحظه‌ای طلا برای ووکامرس (Live Gold Price)** یک راهکار تخصصی، امن و کاملاً استاندارد جهت اتصال مستقیم فروشگاه‌های اینترنتی طلا و جواهر به وب‌سرویس‌های رسمی استعلام نرخ زنده طلا و انواع مسکوکات بانکی است. این افزونه قیمت تمامی محصولات ساده و متغیر را بر اساس فرمول‌های رسمی صنف طلا و جواهر (شامل وزن، اجرت ساخت، سود فروشنده و مالیات بر ارزش افزوده) به‌صورت کاملاً خودکار در صفحات محصول، سبد خرید و برگه پرداخت به‌روزرسانی می‌نماید.
 
 > 📥 **دانلود رایگان از مخزن رسمی وردپرس:**  
-> [صفحه رسمی افزونه در WordPress.org](https://wordpress.org/plugins/live-gold-price/)
+> [صفحه اختصاصی افزونه در WordPress.org](https://wordpress.org/plugins/live-gold-price/)
 
 ---
 
-## فهرست مطالب (Table of Contents)
+## فهرست مطالب
 - [چگونه قیمت لحظه‌ای طلا و سکه را در ووکامرس خودکار کنیم؟](#چگونه-قیمت-لحظهای-طلا-و-سکه-را-در-ووکامرس-خودکار-کنیم)
-- [Real-Time Gold & Coin Market API Integration](#real-time-gold--coin-market-api-integration)
-- [پیش‌نمایش محیط افزونه (Screenshots)](#پیشنمایش-محیط-افزونه-screenshots)
-- [معماری فنی و پایداری عملکرد (Technical Architecture)](#معماری-فنی-و-پایداری-عملکرد-technical-architecture)
+- [اتصال به وب‌سرویس و دارایی‌های تحت پوشش](#اتصال-به-وبسرویس-و-داراییهای-تحت-پوشش)
+- [پیش‌نمایش تصویری محیط افزونه](#پیشنمایش-تصویری-محیط-افزونه)
+- [معماری فنی و پایداری عملکرد](#معماری-فنی-و-پایداری-عملکرد)
 - [فرمول‌های استاندارد محاسبه قیمت طلا](#فرمولهای-استاندارد-محاسبه-قیمت-طلا)
-- [هوک‌ها و مستندات توسعه‌دهندگان (Developer API & Hooks)](#هوکها-و-مستندات-توسعەدهندگان-developer-api--hooks)
-- [نصب و راه‌اندازی (Installation)](#نصب-و-راهاندازی-installation)
-- [💖 حمایت از پروژه (Support the Project)](#-حمایت-از-پروژه-support-the-project)
-- [مشارکت و توسعه (Contributing)](#مشارکت-و-توسعه-contributing)
-- [لایسنس (License)](#لایسنس-license)
+- [هوک‌ها و مستندات توسعه‌دهندگان](#هوکها-و-مستندات-توسعەدهندگان)
+- [راهنمای نصب و راه‌اندازی](#راهنمای-نصب-و-راهاندازی)
+- [💖 حمایت از پروژه](#-حمایت-از-پروژه)
+- [مشارکت و توسعه](#مشارکت-و-توسعه)
+- [لایسنس و مجوز انتشار](#لایسنس-و-مجوز-انتشار)
 
 ---
 
 ## چگونه قیمت لحظه‌ای طلا و سکه را در ووکامرس خودکار کنیم؟
 
-مدیریت دستی قیمت‌ها در بازار پرنوسان طلا ریسک زیان مالی را به شدت افزایش می‌دهد. این افزونه فرآیند قیمت‌گذاری را کاملاً خودکار می‌سازد:
+مدیریت دستی قیمت‌ها در بازار پرنوسان طلا و سکه همواره ریسک زیان مالی فروشندگان را افزایش می‌دهد. این افزونه فرآیند قیمت‌گذاری را بدون کوچک‌ترین تاخیر به صورت کاملاً خودکار درمی‌آورد:
 
-1. **اتصال به وب‌سرویس نرخ طلا:** نرخ‌های بازار در پس‌زمینه توسط کرون‌جاب وردپرس استعلام و ذخیره می‌شوند.
-2. **محاسبه دقیق فرمول طلا:** سیستم بر اساس وزن محصول و ۳ مدل اجرت ساخت (درصدی، گرمی یا ثابت)، سود فروشنده و مالیات قانونی را اعمال می‌کند.
-3. **همگام‌سازی آنی سبد خرید:** مبالغ سبد خرید و تسویه حساب با بالاترین اولویت اجرایی (`priority: 9999`) بلافاصله قبل از پرداخت نهایی با آخرین نرخ استعلام‌شده به‌روزرسانی می‌شوند تا از مغایرت قیمت جلوگیری گردد.
-
----
-
-## Real-Time Gold & Coin Market API Integration
-
-Designed specifically for online jewelry shops, goldsmiths, and bullion merchants operating with WooCommerce:
-
-* **Supported Assets:**
-  * 18-Karat Gold (طلای ۱۸ عیار)
-  * Emami Coin (سکه تمام طرح امامی)
-  * Bahar Azadi Coin (سکه تمام بهار آزادی)
-  * Half Coin (نیم سکه)
-  * Quarter Coin (ربع سکه)
-  * Gerami Coin (سکه گرمی)
-* **Variable Products Synchronization:** Fully calculates distinct attributes (e.g. ring sizes, custom weight variations) dynamically via AJAX and lightweight REST API endpoints.
-* **HPOS Compatible:** Formally certified for WooCommerce High-Performance Order Storage (Custom Order Tables).
+1. **استعلام خودکار نرخ طلا:** نرخ‌های بازار در پس‌زمینه توسط کرون‌جاب وردپرس به شکل منظم دریافت و ذخیره می‌گردند.
+2. **محاسبه دقیق فرمول رسمی طلا:** بر پایه وزن خالص محصول و ۳ مدل اجرت ساخت (درصدی، گرمی یا ثابت)، سود مجاز و مالیات بر ارزش افزوده لحاظ می‌شوند.
+3. **همگام‌سازی آنی سبد خرید و پرداخت:** مبالغ سبد خرید و تسویه حساب با بالاترین اولویت (`priority: 9999`) بلافاصله قبل از پرداخت با آخرین نرخ استعلام‌شده به‌روزرسانی می‌شوند تا از هرگونه مغایرت قیمت جلوگیری گردد.
 
 ---
 
-## پیش‌نمایش محیط افزونه (Screenshots)
+## اتصال به وب‌سرویس و دارایی‌های تحت پوشش
+
+این افزونه به‌طور اختصاصی برای فروشگاه‌های آنلاین طلا، جواهرسازی، زرگری و صرافی‌های فعال در ووکامرس پیاده‌سازی شده است:
+
+* **دارایی‌ها و مسکوکات تحت پوشش:**
+  * طلای ۱۸ عیار
+  * سکه تمام بهار آزادی طرح جدید (امامی)
+  * سکه تمام بهار آزادی طرح قدیم
+  * نیم سکه بهار آزادی
+  * ربع سکه بهار آزادی
+  * سکه گرمی بانکی
+* **محاسبه هوشمند متغیرها:** محاسبه خودکار ویژگی‌های مختلف محصولات متغیر (مانند سایزهای انگشتر یا وزن‌های مختلف دستبند) از طریق AJAX و اندپوینت سبک REST API.
+* **پشتیبانی کامل از HPOS:** سازگار رسمی با مخزن سفارشات پرسرعت ووکامرس (High-Performance Order Storage).
+
+---
+
+## پیش‌نمایش تصویری محیط افزونه
 
 ### پیشخوان مدیریت و مانیتورینگ نرخ‌های زنده
 <p align="center">
-  <img src="assets/screenshot-1.png" alt="پیشخوان افزونه قیمت لحظه‌ای طلا" width="100%" style="border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+  <img src="assets/screenshot-1.png" alt="پیشخوان مدیریت افزونه قیمت لحظه‌ای طلا" width="100%" style="border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
 </p>
 
 ---
 
-## معماری فنی و پایداری عملکرد (Technical Architecture)
+## معماری فنی و پایداری عملکرد
 
 ```
-[ External Gold API ]
-        │ (WP-Cron 1-Min Interval)
+[ وب‌سرویس خارجی طلا ]
+        │ (WP-Cron فواصل ۱ دقیقه‌ای)
         ▼
-[ Transient Cache (55s) ] ──(If API Times Out)──► [ Persistent Backup Snapshot (DB) ]
+[ حافظه موقت کش (۵۵ ثانیه) ] ──(در صورت قطعی وب‌سرویس)──► [ پشتیبان پایدار در دیتابیس ]
         │
         ▼
-[ Live_Gold_Price_Calculator ]
+[ موتور محاسباتی افزونه ]
         │
-        ├──► Single Product Page (Instant REST API Polling)
-        ├──► Variable Dropdowns (Event: show_variation)
-        └──► WooCommerce Cart & Checkout (woocommerce_before_calculate_totals: 9999)
+        ├──► صفحه تکی محصول (استعلام ناهمگام REST API)
+        ├──► لیست متغیرها (رویداد show_variation)
+        └──► سبد خرید و تسویه حساب (woocommerce_before_calculate_totals: 9999)
 ```
 
-### ۱. کشینگ ترنزینت و عدم کاهش سرعت (Zero TTFB Overhead)
-برای جلوگیری از افت سرعت وب‌سایت (Time to First Byte) و مسدودسازی سرور، نرخ‌ها به‌مدت **۵۵ ثانیه** در ترنزینت‌های وردپرس (`set_transient`) کش می‌شوند. کاربران عادی هرگز مستقیماً درخواست شبکه خارجی ارسال نمی‌کنند.
+### ۱. کشینگ هوشمند بدون افت سرعت لود سایت (Zero TTFB Overhead)
+برای جلوگیری از کندی وب‌سایت و جلوگیری از بار اضافی روی سرور، نرخ‌ها به‌مدت **۵۵ ثانیه** در ترنزینت‌های وردپرس ذخیره می‌شوند. بازدیدکنندگان عادی هرگز درخواست خارجی مستقیم به وب‌سرویس ارسال نمی‌کنند.
 
 ### ۲. مکانیزم پایدار پشتیبان دیتابیس (Failover Protection)
-در صورت بروز اختلال اینترنت بین‌الملل، قطعی سرور ارائه‌دهنده وب‌سرویس یا اتمام سقف مجاز، سیستم به آخرین نرخ معتبر ثبت‌شده در دیتابیس سوئیچ می‌کند تا فرآیند فروش و ثبت سفارش متوقف نشود.
+در صورت قطعی اینترنت بین‌الملل، تاخیر یا مسدودی سرور ارائه‌دهنده وب‌سرویس، افزونه بی‌درنگ از آخرین نرخ معتبر ثبت‌شده در دیتابیس استفاده می‌کند تا فرآیند ثبت سفارش و فروش متوقف نشود.
 
 ### ۳. به‌روزرسانی بدون رفرش (Asynchronous REST API)
-قیمت‌های صفحات فرانت‌اند از طریق اندپوینت غیراسبک REST (`/wp-json/live-gold-price/v1/prices`) و به صورت نامتقارن استعلام می‌شوند؛ لذا با افزونه‌های کشینگ مانند WP Rocket و LiteSpeed Cache سازگاری ۱۰۰٪ دارد.
+قیمت‌های صفحه محصول از طریق اندپوینت غیراسبک REST (`/wp-json/live-gold-price/v1/prices`) و به صورت نامتقارن استعلام می‌شوند؛ بنابراین با افزونه‌های کش مانند راکت (WP Rocket) و لایت‌اسپید (LiteSpeed Cache) سازگاری ۱۰۰٪ دارد.
 
 ---
 
 ## فرمول‌های استاندارد محاسبه قیمت طلا
 
-فرمول پیاده‌سازی‌شده در هسته محاسباتی افزونه مطابق استاندارد رسمی صنف طلا و جواهر است:
+فرمول پیاده‌سازی‌شده در موتور محاسباتی افزونه دقیقا مطابق فرمول مصوب صنف طلا و جواهر است:
 
-$$\text{Base Value} = \text{Weight (g)} \times \text{Live Price (per g)}$$
+$$\text{ارزش خام طلا} = \text{وزن (گرم)} \times \text{نرخ لحظه‌ای هر گرم}$$
 
-$$\text{Value with Wage} = \text{Base Value} + \text{Ojrat (Percent, Per Gram, or Flat)}$$
+$$\text{ارزش با اجرت} = \text{ارزش خام طلا} + \text{اجرت ساخت (درصدی، گرمی یا ثابت)}$$
 
-$$\text{Profit} = \text{Value with Wage} \times \left(\frac{\text{Profit \%}}{100}\right)$$
+$$\text{سود فروشنده} = \text{ارزش با اجرت} \times \left(\frac{\text{درصد سود}}{100}\right)$$
 
-$$\text{VAT Tax} = (\text{Value with Wage} + \text{Profit}) \times \left(\frac{\text{Tax \%}}{100}\right)$$
+$$\text{مالیات بر ارزش افزوده} = (\text{ارزش با اجرت} + \text{سود فروشنده}) \times \left(\frac{\text{درصد مالیات}}{100}\right)$$
 
-$$\text{Final Price} = \text{round}(\text{Value with Wage} + \text{Profit} + \text{Tax})$$
+$$\text{قیمت نهایی} = \text{گردکردن}(\text{ارزش با اجرت} + \text{سود فروشنده} + \text{مالیات})$$
 
 ---
 
-## هوک‌ها و مستندات توسعه‌دهندگان (Developer API & Hooks)
+## هوک‌ها و مستندات توسعه‌دهندگان
 
-افزونه شامل فیلترها و اکشن‌های استاندارد برای برنامه‌نویسان و توسعه‌دهندگان قالب‌های اختصاصی است:
+افزونه شامل اکشن‌ها و فیلترهای استاندارد برای توسعه‌دهندگان و برنامه‌نویسان قالب‌های اختصاصی است:
 
-### فیلتر محاسبه نهایی قیمت (`live_gold_price_calculated_price`)
-شما می‌توانید فرمول محاسبات را برای شرایط ویژه (مانند تخفیف‌های خاص، حق بازاریابی یا تخفیف ویژه همکاران) تغییر دهید:
+### فیلتر شخصی‌سازی محاسبه نهایی قیمت (`live_gold_price_calculated_price`)
+امکان دستکاری فرمول محاسبات برای سناریوهای خاص (مانند تخفیف همکار، حق بازاریابی یا تخفیف ویژه مشتریان وفادار):
 
 ```php
 add_filter( 'live_gold_price_calculated_price', 'custom_modify_gold_calculated_price', 10, 6 );
 /**
- * Customize the calculated gold product price.
+ * شخصی‌سازی قیمت محاسبه‌شده محصول طلا
  *
- * @param float $final_price       The final rounded price.
- * @param int   $product_id        Product or Variation ID.
- * @param float $base_gold_value   Raw gold value (Weight * Rate).
- * @param float $wage_amount       Calculated wage (Ojrat).
- * @param float $profit_amount     Calculated seller profit.
- * @param float $tax_amount        Calculated VAT amount.
+ * @param float $final_price       مبلغ نهایی گردشده
+ * @param int   $product_id        شناسه محصول یا متغیر
+ * @param float $base_gold_value   ارزش خام طلا (وزن ضربدر نرخ)
+ * @param float $wage_amount       مبلغ اجرت محاسبه‌شده
+ * @param float $profit_amount     مبلغ سود فروشنده
+ * @param float $tax_amount        مبلغ مالیات بر ارزش افزوده
  * @return float
  */
 function custom_modify_gold_calculated_price( $final_price, $product_id, $base_gold_value, $wage_amount, $profit_amount, $tax_amount ) {
-    // مثال: کسر ۲ درصد برای مشتریان ویژه
+    // مثال: اعمال ۲ درصد تخفیف اختصاصی برای مشتریان ویژه
     if ( current_user_can( 'vip_customer' ) ) {
         $final_price = $final_price * 0.98;
     }
@@ -143,32 +143,32 @@ function custom_modify_gold_calculated_price( $final_price, $product_id, $base_g
 ```
 
 ### اکشن اجرای دستی کرون استعلام قیمت (`live_gold_price_fetch_prices_cron`)
-جهت همگام‌سازی از طریق سیستم‌های خارجی، وب‌هوک‌ها یا شل لینوکس:
+جهت همگام‌سازی از طریق وب‌هوک، سرویس‌های خارجی یا ترمینال سرور:
 
 ```bash
-# اجرا از طریق WP-CLI در ترمینال سرور
+# اجرا از طریق WP-CLI در محیط ترمینال
 wp cron event run live_gold_price_fetch_prices_cron
 ```
 
 ---
 
-## نصب و راه‌اندازی (Installation)
+## راهنمای نصب و راه‌اندازی
 
 ### روش ۱: نصب مستقیم از پیشخوان وردپرس (توصیه‌شده)
-1. وارد پیشخوان وردپرس خود شوید.
-2. به بخش **افزونه‌ها > افزودن** مراجعه نمایید.
+1. وارد پیشخوان وردپرس شوید.
+2. به بخش **افزونه‌ها > افزودن** مراجعه فرمایید.
 3. نام `Live Gold Price` را جستجو کنید.
 4. روی **هم‌اکنون نصب کن** کلیک کرده و سپس افزونه را فعال نمایید.
-5. از منوی پیشخوان، وارد تب **قیمت زنده طلا** شده و کلید وب‌سرویس خود را ثبت کنید.
+5. از منوی پیشخوان، وارد بخش **قیمت زنده طلا** شده و کلید وب‌سرویس را ذخیره کنید.
 
-### روش ۲: نصب از طریق فایل فشرده (GitHub / WordPress.org)
-1. فایل `live-gold-price.zip` را از [مخزن رسمی وردپرس](https://wordpress.org/plugins/live-gold-price/) یا [گیت‌هاب](https://github.com/thekourox/live-gold-price) دانلود کنید.
-2. پوشه بازشده را در مسیر `/wp-content/plugins/live-gold-price/` هاست خود آپلود نمایید.
-3. افزونه را در صفحه مدیریت افزونه‌ها فعال کنید.
+### روش ۲: نصب از طریق فایل فشرده (ZIP)
+1. فایل `live-gold-price.zip` را دانلود کنید.
+2. پوشه استخراج‌شده را در مسیر `/wp-content/plugins/live-gold-price/` آپلود نمایید.
+3. افزونه را در صفحه افزونه‌های وردپرس فعال کنید.
 
 ---
 
-## 💖 حمایت از پروژه (Support the Project)
+## 💖 حمایت از پروژه
 
 این ابزار کاملاً رایگان و متن‌بازه. اگه کارتون رو راه انداخت و براتون مفید بود، با زدن یه ⭐ روی گیت‌هاب یا حمایت رمزارزی می‌تونید به ادامه‌ی این مسیر انرژی بدید:
 
@@ -178,17 +178,17 @@ wp cron event run live_gold_price_fetch_prices_cron
 
 ---
 
-## مشارکت و توسعه (Contributing)
+## مشارکت و توسعه
 
-مشارکت‌ها، گزارش باگ‌ها و ارسال Pull Request همواره مورد استقبال است:
+از مشارکت، گزارش باگ‌ها و ارسال Pull Request همواره استقبال می‌شود:
 1. این مخزن را Fork کنید.
-2. یک برنچ برای قابلیت جدید خود بسازید (`git checkout -b feature/NewFeature`).
-3. تغییرات را کامیت کنید (`git commit -m 'Add NewFeature'`).
+2. یک شاخه برای قابلیت جدید بسازید (`git checkout -b feature/NewFeature`).
+3. تغییرات را Commit کنید (`git commit -m 'Add NewFeature'`).
 4. تغییرات را Push کنید (`git push origin feature/NewFeature`).
 5. یک Pull Request جدید ارسال نمایید.
 
 ---
 
-## لایسنس (License)
+## لایسنس و مجوز انتشار
 
-این افزونه تحت لایسنس عمومی **GNU General Public License v2.0 or later** منتشر شده است. استفاده، بازنشر و توسعه آن با رعایت شرایط این لایسنس کاملاً آزاد و رایگان است.
+این افزونه تحت لایسنس عمومی **GNU General Public License v2.0 or later** منتشر شده است. استفاده، بازنشر و توسعه آن با رعایت شروط این لایسنس کاملاً آزاد و رایگان است.
