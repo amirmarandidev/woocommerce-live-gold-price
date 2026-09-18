@@ -9,7 +9,7 @@
 </p>
 
 [![WordPress Plugin Version](https://img.shields.io/badge/WordPress.org-v1.5.3-blue.svg)](https://wordpress.org/plugins/live-gold-price/)
-[![Tested up to WordPress](https://img.shields.io/badge/WordPress-5.8%20--%206.7-brightgreen.svg)](https://wordpress.org/plugins/live-gold-price/)
+[![Tested up to WordPress](https://img.shields.io/badge/WordPress-5.8%20--%207.1-brightgreen.svg)](https://wordpress.org/plugins/live-gold-price/)
 [![PHP Version](https://img.shields.io/badge/PHP-7.4%20--%208.3-indigo.svg)](https://wordpress.org/plugins/live-gold-price/)
 [![License](https://img.shields.io/badge/License-GPLv2%2B-orange.svg)](https://www.gnu.org/licenses/gpl-2.0.html)
 [![WooCommerce HPOS](https://img.shields.io/badge/WooCommerce-HPOS%20Ready-success.svg)](https://woocommerce.com/)

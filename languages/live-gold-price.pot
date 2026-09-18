@@ -1,0 +1,237 @@
+# Copyright (C) 2026 Amir Marandi
+# This file is distributed under the GPLv2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Live Gold Price 1.5.3\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/live-gold-price/\n"
+"Last-Translator: Amir Marandi <thekourox@gmail.com>\n"
+"Language-Team: Persian\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-09-18T05:55:00+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Domain: live-gold-price\n"
+
+msgid "No product IDs provided."
+msgstr ""
+
+msgid "Unauthorized access."
+msgstr ""
+
+msgid "آدرس دریافت قیمت لحظه‌ای طلا. برای دریافت کلید وب‌سرویس به وب‌سایت ارائه‌دهنده مراجعه کنید:"
+msgstr ""
+
+msgid "ارتباط با توسعه‌دهنده"
+msgstr ""
+
+msgid "از کار با افزونه قیمت لحظه‌ای طلا رضایت دارید؟"
+msgstr ""
+
+msgid "اصلاح رنگ تیره قالب (Dark Mode)"
+msgstr ""
+
+msgid "اصلاح رنگ لیست‌های بازشونده (Select/Dropdown) در قالب تیره"
+msgstr ""
+
+msgid "اصلاح رنگ گزینه‌ها (لیست متغیرها)"
+msgstr ""
+
+msgid "اطلاعات وضعیت سیستم و عیب‌یابی (System Diagnostic Report)"
+msgstr ""
+
+msgid "افزونه «قیمت لحظه‌ای طلا» برای کارکرد صحیح نیازمند نصب و فعال‌سازی افزونه ووکامرس (WooCommerce) است."
+msgstr ""
+
+msgid "افزونه قیمت لحظه‌ای طلا اکنون بیش از ۵۰ بار نرخ‌های طلا و سکه فروشگاه شما را با موفقیت به‌روزرسانی کرده است. با ثبت یک امتیاز ۵ ستاره و نظر ارزشمند خود در مخزن وردپرس، به توسعه و تداوم این پروژه رایگان کمک کنید."
+msgstr ""
+
+msgid "اگر از قالب تیره استفاده می‌کنید و برخی متون سایت به دلیل رنگ تیره ناخوانا هستند، این گزینه را فعال کنید."
+msgstr ""
+
+msgid "این ابزار کاملاً رایگان و متن‌بازه. اگه کارتون رو راه انداخت و براتون مفید بود، با زدن یه ⭐ روی گیت‌هاب یا حمایت رمزارزی می‌تونید به ادامه‌ی این مسیر انرژی بدید:"
+msgstr ""
+
+msgid "با تیک زدن این گزینه، قیمت این محصول به صورت زنده و با فرمول طلا محاسبه می‌شود."
+msgstr ""
+
+msgid "بستن"
+msgstr ""
+
+msgid "بعداً یادآوری کن (۱۴ روز)"
+msgstr ""
+
+msgid "تبدیل خودکار متن‌ها و عناوین با رنگ تیره (#222222) به رنگ سفید (#fff)"
+msgstr ""
+
+msgid "تنظیمات API و فرمول پایه"
+msgstr ""
+
+msgid "تنظیمات قیمت زنده طلا"
+msgstr ""
+
+msgid "توسعه‌داده‌شده توسط:"
+msgstr ""
+
+msgid "تومان"
+msgstr ""
+
+msgid "ثابت هر گرم"
+msgstr ""
+
+msgid "ثابت کل"
+msgstr ""
+
+msgid "ثبت نظر در مخزن وردپرس"
+msgstr ""
+
+msgid "حمایت از پروژه"
+msgstr ""
+
+msgid "خطا: اطلاعات قیمت یا تنظیمات محصول ناقص است"
+msgstr ""
+
+msgid "در حال حاضر قیمت زنده‌ای در کش موجود نیست (ممکن است منقضی شده باشد یا API پاسخ نداده باشد)."
+msgstr ""
+
+msgid "در حال محاسبه... (اگر تغییر نکرد تنظیمات API یا محصول ناقص است)"
+msgstr ""
+
+msgid "در صورت خالی گذاشتن، از تنظیمات پیش‌فرض افزونه استفاده می‌شود."
+msgstr ""
+
+msgid "در صورت نیاز به پشتیبانی فنی یا گزارش اشکال، متن زیر را کپی کرده و ارسال نمایید:"
+msgstr ""
+
+msgid "در صورتی که در صفحه محصول، متن گزینه‌های منوی بازشونده (مثل اندازه انگشتر) قابل خواندن نیستند، این گزینه را فعال کنید تا پس‌زمینه تیره و متن سفید شود."
+msgstr ""
+
+msgid "درصد سود پیش‌فرض برای محصولاتی که سود اختصاصی ندارند."
+msgstr ""
+
+msgid "درصد مالیات پیش‌فرض (ارزش افزوده)."
+msgstr ""
+
+msgid "درصدی"
+msgstr ""
+
+msgid "درصدی از قیمت خام طلا"
+msgstr ""
+
+msgid "دریافت دستی قیمت‌ها همین الان"
+msgstr ""
+
+msgid "ذخیره تنظیمات"
+msgstr ""
+
+msgid "ربع سکه"
+msgstr ""
+
+msgid "سود فروشنده (%)"
+msgstr ""
+
+msgid "سود پیش‌فرض فروشنده (%)"
+msgstr ""
+
+msgid "سکه امامی"
+msgstr ""
+
+msgid "سکه بهار آزادی"
+msgstr ""
+
+msgid "سکه گرمی"
+msgstr ""
+
+msgid "شماره کارت:"
+msgstr ""
+
+msgid "طلای 18 عیار"
+msgstr ""
+
+msgid "فعال‌سازی قیمت زنده"
+msgstr ""
+
+msgid "فعال‌سازی قیمت زنده برای این متغیر"
+msgstr ""
+
+msgid "قبلاً نظر داده‌ام / نمایش نده"
+msgstr ""
+
+msgid "قیمت زنده طلا"
+msgstr ""
+
+msgid "قیمت زنده طلا (جایگزین قیمت عادی می‌شود)"
+msgstr ""
+
+msgid "قیمت لحظه‌ای"
+msgstr ""
+
+msgid "قیمت‌های زنده با موفقیت دریافت شده و در حافظه موقت (کش) موجود هستند."
+msgstr ""
+
+msgid "لینک وب‌سرویس (API Endpoint)"
+msgstr ""
+
+msgid "مالیات (%)"
+msgstr ""
+
+msgid "مالیات ارزش افزوده (%)"
+msgstr ""
+
+msgid "مالیات پیش‌فرض (%)"
+msgstr ""
+
+msgid "مبلغ ثابت به ازای هر گرم"
+msgstr ""
+
+msgid "مبلغ ثابت کل"
+msgstr ""
+
+msgid "محصول طلا نیست (غیرفعال)"
+msgstr ""
+
+msgid "مقدار اجرت"
+msgstr ""
+
+msgid "مقدار اجرت را بر اساس نوع انتخاب شده در بالا وارد کنید."
+msgstr ""
+
+msgid "نوع طلا / نوع سکه"
+msgstr ""
+
+msgid "نوع محاسبه اجرت"
+msgstr ""
+
+msgid "نوع محصول را برای دریافت قیمت متناظر از API انتخاب کنید."
+msgstr ""
+
+msgid "نیم سکه"
+msgstr ""
+
+msgid "هر ۱ دقیقه (افزونه طلا)"
+msgstr ""
+
+msgid "وزن (گرم)"
+msgstr ""
+
+msgid "وزن طلا را وارد کنید. برای سکه معمولاً ۱ وارد می‌شود."
+msgstr ""
+
+msgid "وضعیت قیمت‌های زنده"
+msgstr ""
+
+msgid "کلید تایید هویت برای وب‌سرویس"
+msgstr ""
+
+msgid "کلید وب‌سرویس (API Key)"
+msgstr ""
+
+msgid "کپی"
+msgstr ""
+
+msgid "کپی گزارش در کلیپ‌بورد"
+msgstr ""
+
+msgid "گزارش سیستم با موفقیت کپی شد."
+msgstr ""
+

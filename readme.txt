@@ -1,9 +1,9 @@
-=== Live Gold Price – قیمت لحظه‌ای طلا (Gold Price) ===
+=== Live Gold Price ===
 Contributors: amirmarandi
 Donate link: https://kourox.ir
 Tags: woocommerce, gold-price, live-price, coin-price, currency
 Requires at least: 5.8
-Tested up to: 6.7
+Tested up to: 7.1
 Requires PHP: 7.4
 Stable tag: 1.5.3
 License: GPLv2 or later

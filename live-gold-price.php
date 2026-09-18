@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name:       Persian Live Gold Price for WooCommerce
+ * Plugin Name:       Live Gold Price
  * Plugin URI:        https://github.com/thekourox/live-gold-price
  * Description:       افزونه فارسی اتصال آنلاین به وب‌سرویس‌های قیمت لحظه‌ای طلا و محاسبه قیمت لحظه‌ای محصولات در ووکامرس.
  * Version:           1.5.3
