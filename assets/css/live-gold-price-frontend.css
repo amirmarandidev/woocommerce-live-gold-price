@@ -1,0 +1,96 @@
+/**
+ * Persian Live Gold Price for WooCommerce
+ * Frontend Stylesheet
+ */
+
+.live-gold-price-icon,
+.lgp-live-icon {
+	display: inline-block;
+	width: 8px;
+	height: 8px;
+	background-color: #ff3b30;
+	border-radius: 50%;
+	margin-left: 6px;
+	margin-right: 6px;
+	position: relative;
+	top: -1px;
+	box-shadow: 0 0 0 rgba(255, 59, 48, 0.7);
+	animation: live-gold-price-pulse 1.5s infinite;
+}
+
+@keyframes live-gold-price-pulse {
+	0% {
+		box-shadow: 0 0 0 0 rgba(255, 59, 48, 0.7);
+	}
+	70% {
+		box-shadow: 0 0 0 6px rgba(255, 59, 48, 0);
+	}
+	100% {
+		box-shadow: 0 0 0 0 rgba(255, 59, 48, 0);
+	}
+}
+
+@keyframes lgp-pulse {
+	0% {
+		box-shadow: 0 0 0 0 rgba(255, 59, 48, 0.7);
+	}
+	70% {
+		box-shadow: 0 0 0 6px rgba(255, 59, 48, 0);
+	}
+	100% {
+		box-shadow: 0 0 0 0 rgba(255, 59, 48, 0);
+	}
+}
+
+.live-gold-price-wrapper,
+.lgp-live-price-wrapper {
+	display: inline-flex;
+	align-items: center;
+}
+
+.woocommerce-variation-price .live-gold-price-wrapper,
+.woocommerce-variation-price .price .live-gold-price-wrapper,
+.woocommerce-variation-price .lgp-live-price-wrapper,
+.woocommerce-variation-price .price .lgp-live-price-wrapper {
+	font-size: 1.65em !important;
+	font-weight: 900 !important;
+	color: inherit;
+}
+
+.live-gold-price-skeleton,
+.lgp-loading-skeleton {
+	display: inline-block;
+	width: 140px;
+	height: 28px;
+	background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+	background-size: 200% 100%;
+	animation: live-gold-price-skeleton-loading 1.5s infinite;
+	border-radius: 6px;
+	vertical-align: middle;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+@keyframes live-gold-price-skeleton-loading {
+	0% {
+		background-position: 200% 0;
+	}
+	100% {
+		background-position: -200% 0;
+	}
+}
+
+@keyframes lgp-skeleton-loading {
+	0% {
+		background-position: 200% 0;
+	}
+	100% {
+		background-position: -200% 0;
+	}
+}
+
+.live-gold-price-error,
+.lgp-price-error {
+	color: #d63638;
+	font-size: 14px;
+}

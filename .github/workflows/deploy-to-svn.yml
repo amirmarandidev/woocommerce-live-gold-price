@@ -1,0 +1,37 @@
+name: Deploy to WordPress.org SVN
+
+on:
+  release:
+    types: [published]
+  push:
+    tags:
+      - 'v*'
+
+concurrency:
+  group: svn-deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy to WordPress Plugin Directory
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Validate Plugin Readme
+        run: |
+          if [ ! -f "readme.txt" ]; then
+            echo "Error: readme.txt is missing from root."
+            exit 1
+          fi
+
+      - name: Deploy to WordPress.org SVN
+        uses: 10up/action-wordpress-plugin-deploy@v2.2.3
+        env:
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          SLUG: live-gold-price
+          ASSETS_DIR: assets
+        with:
+          generate_zip: false

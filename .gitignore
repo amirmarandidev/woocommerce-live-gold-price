@@ -1,0 +1,14 @@
+# Build and Archive files
+*.zip
+
+# Source / Raw graphical assets (kept outside git, outputs are in assets/)
+banner.jpg
+logo.png
+screenshot.png
+
+# OS & Editor metadata
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.log

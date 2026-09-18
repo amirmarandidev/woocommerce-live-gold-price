@@ -1,0 +1,207 @@
+# Persian Live Gold Price for WooCommerce – Complete Technical Documentation
+
+## 1. Architecture Overview
+
+### 1.1 Ingestion and Background Polling
+The plugin polls external gold and coin financial market APIs using standard WordPress HTTP APIs (`wp_remote_get`).
+- **Trigger:** WP-Cron event hook `live_gold_price_fetch_prices_cron` scheduled on custom interval `live_gold_price_1_min` (60 seconds).
+- **Execution:** Managed by `Live_Gold_Price_API_Handler::fetch_prices_from_api()`.
+- **Payload Sanitization:** Validates response body length (capped at 50,000 bytes to prevent memory exhaustion), parses JSON, and sanitizes each gold currency name and float price.
+
+### 1.2 Dual-Tier Caching & Failover Strategy
+To eliminate Time to First Byte (TTFB) overhead and prevent API rate-limiting:
+1. **Tier 1 (Transient Cache):** Parsed market prices are written to transient key `live_gold_price_gold_prices` with a 55-second expiration.
+2. **Tier 2 (Persistent Backup):** Concurrently saved to `wp_options` under `live_gold_price_gold_prices_backup` without expiration.
+3. **Failover Execution:** If the external API times out, returns HTTP errors, or exhausts quota, the transient is immediately repopulated with `live_gold_price_gold_prices_backup`. Frontend users never encounter blocking outbound HTTP calls or pricing disruptions.
+
+### 1.3 Database Footprint
+All plugin data uses strict, collision-free prefixes:
+
+#### Database Options (`wp_options`):
+- `live_gold_price_version`: (string) Current installed version for migration routines (e.g. `'1.5.3'`).
+- `live_gold_price_api_url`: (string) API endpoint URL (default: `'https://api.brsapi.ir/Market/Gold_Currency.php'`).
+- `live_gold_price_api_key`: (string) Customer authentication key for the API service.
+- `live_gold_price_global_profit`: (string|float) Default fallback seller profit percentage (default: `'7'`).
+- `live_gold_price_global_tax`: (string|float) Default fallback VAT tax percentage (default: `'2'`).
+- `live_gold_price_dark_mode_fix`: (string) Flag `'yes'` or `'no'` for global text contrast adjustments.
+- `live_gold_price_dropdown_dark_mode_fix`: (string) Flag `'yes'` or `'no'` for variation dropdown dark styling.
+- `live_gold_price_gold_prices_backup`: (array) Stored array mapping asset names to raw float prices.
+- `live_gold_price_last_api_fetch`: (int) UNIX timestamp of last successful API sync.
+
+#### Product Post Meta (`wp_postmeta`):
+- `_live_gold_price_enabled`: (string) `'yes'` or `'no'`.
+- `_live_gold_price_purity`: (string) Selected asset key (e.g., `'طلای 18 عیار'`, `'سکه امامی'`).
+- `_live_gold_price_weight`: (float) Weight in grams.
+- `_live_gold_price_wage_type`: (string) Wage calculation method: `'percent'`, `'per_gram'`, or `'fixed'`.
+- `_live_gold_price_wage`: (float) Numerical wage value.
+- `_live_gold_price_profit`: (string|float) Product-specific profit override.
+- `_live_gold_price_tax`: (string|float) Product-specific VAT override.
+
+---
+
+## 2. Hooks & Filters Reference
+
+### 2.1 Filters
+
+#### `live_gold_price_calculated_price`
+Modifies the computed live price for a given product or variation before rounding and rendering.
+```php
+apply_filters(
+    'live_gold_price_calculated_price',
+    float $final_price,
+    int $product_id,
+    float $base_gold_value,
+    float $wage_amount,
+    float $profit_amount,
+    float $tax_amount
+): float
+```
+- `$final_price` (float): Computed total price prior to final filter modification.
+- `$product_id` (int): WooCommerce Product ID or Variation ID.
+- `$base_gold_value` (float): Raw gold value (`$weight * $live_price_per_unit`).
+- `$wage_amount` (float): Computed manufacturing fee (Ojrat).
+- `$profit_amount` (float): Computed seller profit markup.
+- `$tax_amount` (float): Computed value-added tax.
+- **Return:** (float) Modified final price.
+
+#### `cron_schedules`
+Defines custom 1-minute execution intervals for background updates.
+- Hooked function: `live_gold_price_add_cron_interval( array $schedules ): array`
+- Registers key: `live_gold_price_1_min` (`interval => 60`).
+
+#### `woocommerce_get_price_html`
+Injects live indicator pulse badge and wrappers into product prices.
+- Hooked method: `Live_Gold_Price_Frontend::override_price_html( string $price_html, \WC_Product $product ): string`
+
+### 2.2 Actions
+
+#### `live_gold_price_fetch_prices_cron`
+Cron action invoked by WordPress to trigger an automated API fetch.
+```php
+do_action( 'live_gold_price_fetch_prices_cron' );
+```
+
+#### `woocommerce_before_calculate_totals`
+Recalculates cart items against live rates at priority 9999.
+- Hooked method: `Live_Gold_Price_Cart::update_cart_prices( \WC_Cart $cart ): void`
+
+#### `admin_post_live_gold_price_manual_fetch`
+Administrative action triggered to flush transient caches and force an immediate synchronous API query.
+- Capability: `manage_woocommerce` or `manage_options`.
+- Nonce action: `live_gold_price_manual_fetch_action`.
+
+---
+
+## 3. REST API Specification
+
+### Endpoint: `GET /wp-json/live-gold-price/v1/prices`
+Fetches pre-rendered, escaped live price markup for an array of product IDs without initiating external HTTP connections.
+
+#### Request Parameters:
+- `ids` (string, required): Comma-separated list of product/variation IDs (e.g. `?ids=102,105,110`).
+
+#### Response Schema:
+```json
+{
+  "102": "<span class=\"live-gold-price-icon lgp-live-icon\" title=\"قیمت لحظه‌ای\"></span><span class=\"woocommerce-Price-amount amount\"><bdi>4,250,000&nbsp;<span class=\"woocommerce-Price-currencySymbol\">تومان</span></bdi></span>",
+  "105": "<span class=\"live-gold-price-icon lgp-live-icon\" title=\"قیمت لحظه‌ای\"></span><span class=\"woocommerce-Price-amount amount\"><bdi>51,300,000&nbsp;<span class=\"woocommerce-Price-currencySymbol\">تومان</span></bdi></span>"
+}
+```
+
+---
+
+## 4. Code Recipes for Developers
+
+### Recipe 1: Custom Wholesale / VIP Profit Override
+Adjust the computed gold price dynamically based on custom user roles:
+
+```php
+add_filter( 'live_gold_price_calculated_price', 'my_custom_gold_role_discount', 10, 6 );
+/**
+ * Deduct 3% from final gold price for registered VIP wholesale clients.
+ *
+ * @param float $final_price
+ * @param int   $product_id
+ * @param float $base_gold_value
+ * @param float $wage_amount
+ * @param float $profit_amount
+ * @param float $tax_amount
+ * @return float
+ */
+function my_custom_gold_role_discount( $final_price, $product_id, $base_gold_value, $wage_amount, $profit_amount, $tax_amount ) {
+    if ( is_user_logged_in() && current_user_can( 'wholesale_buyer' ) ) {
+        // Remove standard seller profit for wholesale tier
+        $discounted_price = ( $base_gold_value + $wage_amount ) * 1.02; // Base + Wage + minimal tax
+        return round( $discounted_price );
+    }
+    return $final_price;
+}
+```
+
+### Recipe 2: Programmatically Retrieve Live Rates in Theme Templates
+Access cached gold asset rates directly in custom theme blocks or shortcodes:
+
+```php
+/**
+ * Render a live 18k gold ticker badge anywhere in PHP.
+ *
+ * @return string HTML ticker markup.
+ */
+function my_theme_render_18k_gold_ticker() {
+    if ( ! class_exists( 'Live_Gold_Price_API_Handler' ) ) {
+        return '';
+    }
+
+    $prices = Live_Gold_Price_API_Handler::get_prices();
+    if ( empty( $prices ) || ! isset( $prices['طلای 18 عیار'] ) ) {
+        return '<span>نرخ طلا در دسترس نیست</span>';
+    }
+
+    $rate = floatval( $prices['طلای 18 عیار'] );
+    return sprintf(
+        '<div class="gold-rate-ticker"><strong>هر گرم طلای ۱۸ عیار:</strong> %s تومان</div>',
+        esc_html( number_format( $rate ) )
+    );
+}
+```
+
+### Recipe 3: Trigger Immediate Refresh on Custom Webhook
+Sync gold prices immediately upon external stock exchange alerts:
+
+```php
+add_action( 'rest_api_init', function() {
+    register_rest_route( 'my-store/v1', '/refresh-gold', array(
+        'methods'             => 'POST',
+        'permission_callback' => function( $request ) {
+            return $request->get_header( 'X-Webhook-Secret' ) === 'YOUR_SECRET_TOKEN';
+        },
+        'callback'            => function() {
+            if ( class_exists( 'Live_Gold_Price_API_Handler' ) ) {
+                delete_transient( 'live_gold_price_gold_prices' );
+                $fresh_prices = Live_Gold_Price_API_Handler::fetch_prices_from_api();
+                return rest_ensure_response( array( 'success' => true, 'data' => $fresh_prices ) );
+            }
+            return new WP_Error( 'unavailable', 'Plugin inactive', array( 'status' => 500 ) );
+        }
+    ) );
+} );
+```
+
+---
+
+## 5. Synthetic Q&A Pairs (AI / RAG Benchmarks)
+
+### Q1: How to programmatically fetch the cached gold price from Live Gold Price in PHP?
+**A:** Use the static method `Live_Gold_Price_API_Handler::get_prices()`. This returns an associative array of asset names mapped to float prices (e.g., `['طلای 18 عیار' => 4350000.0]`) directly from transient memory or persistent backup without initiating external HTTP requests.
+
+### Q2: چگونه قیمت طلا را با کد در قالب اختصاصی وردپرس نمایش دهیم؟
+**A:** برای استخراج و نمایش قیمت، متد `Live_Gold_Price_Calculator::calculate_price( $product_id )` را با شناسه محصول یا متغیر فراخوانی کنید تا مبلغ بر اساس فرمول طلا محاسبه گردد. همچنین می‌توانید آرایه کامل نرخ‌های لحظه‌ای را مستقیماً با `Live_Gold_Price_API_Handler::get_prices()` دریافت و مقدار کلید مورد نظر (مانند `'طلای 18 عیار'`) را فرمت نمایید.
+
+### Q3: نحوه اعمال اجرت ساخت روی محصولات طلا در ووکامرس با افزونه Live Gold Price چگونه است؟
+**A:** در تب اختصاصی «قیمت زنده طلا» در صفحه ویرایش محصول یا متغیر، نوع اجرت ساخت را روی یکی از حالات درصدی (`percent`)، ثابت هر گرم (`per_gram`) یا ثابت کل (`fixed`) قرار داده و مقدار عددی را وارد کنید. موتور محاسباتی افزونه ارزش خام طلا را بر مبنای وزن و نرخ روز محاسبه کرده و اجرت، سود و مالیات را خودکار اضافه می‌کند.
+
+### Q4: How does the plugin prevent price discrepancies between product page view and checkout payment?
+**A:** The plugin hooks into WooCommerce totals calculation via `woocommerce_before_calculate_totals` at maximum priority (`9999`). Before final payment gateway processing, every live gold item in the cart is dynamically recalculated against the latest cached market rates.
+
+### Q5: How to filter or customize the calculated gold price formula?
+**A:** Attach a callback to the `live_gold_price_calculated_price` filter hook. The filter provides the raw base gold value, wage amount, profit amount, tax amount, and product ID, allowing custom math or customer-specific pricing before values are returned to WooCommerce.

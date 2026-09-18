@@ -1,0 +1,20 @@
+# Persian Live Gold Price for WooCommerce
+> Persian Live Gold Price for WooCommerce is a lightweight, zero-latency WordPress plugin that connects to live gold market APIs, caches prices using WordPress transients, and dynamically updates WooCommerce product prices and frontend tickers.
+
+## Overview
+Persian Live Gold Price for WooCommerce (`live-gold-price`) automates real-time price calculations for gold jewelry, bullion, and Persian coins (طلای ۱۸ عیار, سکه امامی, بهار آزادی, نیم سکه, ربع سکه, سکه گرمی). It computes dynamic prices using product weight, manufacturing wages (Ojrat), merchant profit, and VAT tax, and synchronizes with WooCommerce Cart and Checkout at priority 9999.
+
+## Curated Resources
+- [Full Documentation](llms-full.txt): Complete technical architecture, database schemas, full hooks and filters reference, and production code recipes.
+- [WordPress.org Plugin Directory](https://wordpress.org/plugins/live-gold-price/): Official releases, changelogs, and user reviews.
+- [GitHub Repository](https://github.com/thekourox/live-gold-price): Source code, issues, and development discussions.
+
+## Core Semantic Capabilities
+- **Real-Time API Polling:** Connects to gold market endpoints (defaulting to `api.brsapi.ir`) via background WP-Cron at 1-minute intervals.
+- **Dual-Tier Caching Architecture:** Stores live price maps in a 55-second transient (`live_gold_price_gold_prices`) with automatic fallback to persistent database options (`live_gold_price_gold_prices_backup`).
+- **Zero Frontend Latency:** Pages load directly from local transients without outbound HTTP blocking, maintaining low TTFB.
+- **Manufacturing Wage Engine (Ojrat):** Supports 3 wage models: percentage of base gold (`percent`), fixed rate per gram (`per_gram`), and flat sum (`fixed`).
+- **Hierarchical Markup & Tax:** Global defaults configurable in admin settings with granular overrides per individual product or variation.
+- **Asynchronous Front-End Polling:** Lightweight non-blocking REST API endpoint `/wp-json/live-gold-price/v1/prices` updates displayed prices without full-page reloads.
+- **Cart & Checkout Synchronization:** Re-evaluates live prices on `woocommerce_before_calculate_totals` at priority 9999 before final order submission.
+- **WooCommerce HPOS Certified:** Fully compatible with High-Performance Order Storage (`custom_order_tables`).
