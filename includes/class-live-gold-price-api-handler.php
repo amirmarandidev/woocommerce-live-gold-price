@@ -21,6 +21,20 @@ class Live_Gold_Price_API_Handler {
 	}
 
 	/**
+	 * Retrieve configured refresh interval in seconds (strictly minimum 10 seconds).
+	 *
+	 * @return int Interval in seconds.
+	 */
+	public static function get_refresh_interval() {
+		$interval = get_option( 'live_gold_price_refresh_interval', '' );
+		if ( '' === $interval ) {
+			$interval = get_option( 'lgp_refresh_interval', 60 );
+		}
+		$interval = absint( $interval );
+		return max( 10, $interval );
+	}
+
+	/**
 	 * Retrieve cached gold prices or fallback to backup option.
 	 *
 	 * @return array|false Array of prices or false on failure.
@@ -40,8 +54,10 @@ class Live_Gold_Price_API_Handler {
 				$last_fetch = (int) get_option( 'lgp_last_api_fetch', 0 );
 			}
 
-			// If never fetched or more than 60 seconds have elapsed, fetch live from API.
-			if ( 0 === $last_fetch || ( time() - $last_fetch ) >= 60 ) {
+			$interval = self::get_refresh_interval();
+
+			// If never fetched or the configured interval has elapsed, fetch live from API.
+			if ( 0 === $last_fetch || ( time() - $last_fetch ) >= $interval ) {
 				$prices = self::fetch_prices_from_api();
 			}
 
@@ -141,9 +157,13 @@ class Live_Gold_Price_API_Handler {
 			return self::handle_api_failure();
 		}
 
-		// Store in transient for 55 seconds (to align with 1-minute cron).
-		set_transient( 'live_gold_price_gold_prices', $parsed_prices, 55 );
-		set_transient( 'lgp_gold_prices', $parsed_prices, 55 );
+		$interval = self::get_refresh_interval();
+		// Set transient TTL (at least 8s or interval minus buffer)
+		$ttl = ( $interval > 15 ) ? ( $interval - 3 ) : $interval;
+
+		// Store in transient aligned with user configured refresh interval.
+		set_transient( 'live_gold_price_gold_prices', $parsed_prices, $ttl );
+		set_transient( 'lgp_gold_prices', $parsed_prices, $ttl );
 
 		// Store backup that never expires.
 		update_option( 'live_gold_price_gold_prices_backup', $parsed_prices );
@@ -170,9 +190,12 @@ class Live_Gold_Price_API_Handler {
 		}
 
 		if ( ! empty( $old_prices ) && is_array( $old_prices ) ) {
+			$interval = self::get_refresh_interval();
+			$ttl      = ( $interval > 15 ) ? ( $interval - 3 ) : $interval;
+
 			// Restore transient with old data to avoid spamming a failing external API.
-			set_transient( 'live_gold_price_gold_prices', $old_prices, 55 );
-			set_transient( 'lgp_gold_prices', $old_prices, 55 );
+			set_transient( 'live_gold_price_gold_prices', $old_prices, $ttl );
+			set_transient( 'lgp_gold_prices', $old_prices, $ttl );
 			return $old_prices;
 		}
 

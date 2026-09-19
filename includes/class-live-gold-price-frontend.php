@@ -77,12 +77,15 @@ class Live_Gold_Price_Frontend {
 			true
 		);
 
+		$refresh_interval = Live_Gold_Price_API_Handler::get_refresh_interval();
+
 		wp_localize_script(
 			'live-gold-price-frontend',
 			'live_gold_price_data',
 			array(
-				'rest_url' => esc_url_raw( rest_url( 'live-gold-price/v1/prices' ) ),
-				'nonce'    => wp_create_nonce( 'wp_rest' ),
+				'rest_url'         => esc_url_raw( rest_url( 'live-gold-price/v1/prices' ) ),
+				'nonce'            => wp_create_nonce( 'wp_rest' ),
+				'refresh_interval' => $refresh_interval,
 			)
 		);
 
@@ -91,8 +94,9 @@ class Live_Gold_Price_Frontend {
 			'live-gold-price-frontend',
 			'lgp_data',
 			array(
-				'rest_url' => esc_url_raw( rest_url( 'live-gold-price/v1/prices' ) ),
-				'nonce'    => wp_create_nonce( 'wp_rest' ),
+				'rest_url'         => esc_url_raw( rest_url( 'live-gold-price/v1/prices' ) ),
+				'nonce'            => wp_create_nonce( 'wp_rest' ),
+				'refresh_interval' => $refresh_interval,
 			)
 		);
 

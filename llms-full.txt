@@ -18,7 +18,7 @@ To eliminate Time to First Byte (TTFB) overhead and prevent API rate-limiting:
 All plugin data uses strict, collision-free prefixes:
 
 #### Database Options (`wp_options`):
-- `live_gold_price_version`: (string) Current installed version for migration routines (e.g. `'1.5.3'`).
+- `live_gold_price_version`: (string) Current installed version for migration routines (e.g. `'1.5.5'`).
 - `live_gold_price_api_url`: (string) API endpoint URL (default: `'https://api.brsapi.ir/Market/Gold_Currency.php'`).
 - `live_gold_price_api_key`: (string) Customer authentication key for the API service.
 - `live_gold_price_global_profit`: (string|float) Default fallback seller profit percentage (default: `'7'`).

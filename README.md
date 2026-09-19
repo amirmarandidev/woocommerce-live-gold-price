@@ -8,7 +8,7 @@
   <img src="assets/banner-1544x500.jpg" alt="بنر افزونه قیمت لحظه‌ای طلا" width="100%">
 </p>
 
-[![نسخه در مخزن وردپرس](https://img.shields.io/badge/WordPress.org-v1.5.3-blue.svg)](https://wordpress.org/plugins/live-gold-price/)
+[![نسخه در مخزن وردپرس](https://img.shields.io/badge/WordPress.org-v1.5.5-blue.svg)](https://wordpress.org/plugins/live-gold-price/)
 [![سازگار با وردپرس](https://img.shields.io/badge/%D9%88%D8%B1%D8%AF%D9%BE%D8%B1%D8%B3-5.8%20--%207.1-brightgreen.svg)](https://wordpress.org/plugins/live-gold-price/)
 [![نسخه PHP](https://img.shields.io/badge/PHP-7.4%20--%208.3-indigo.svg)](https://wordpress.org/plugins/live-gold-price/)
 [![لایسنس](https://img.shields.io/badge/%D9%84%D8%A7%DB%8C%D8%B3%D9%86%D8%B3-GPLv2%2B-orange.svg)](https://www.gnu.org/licenses/gpl-2.0.html)

@@ -3,7 +3,7 @@
  * Plugin Name:       Live Gold Price
  * Plugin URI:        https://github.com/amirmarandidev/woocommerce-live-gold-price
  * Description:       افزونه فارسی اتصال آنلاین به وب‌سرویس‌های قیمت لحظه‌ای طلا و محاسبه قیمت لحظه‌ای محصولات در ووکامرس.
- * Version:           1.5.3
+ * Version:           1.5.5
  * Requires at least: 5.8
  * Requires PHP:      7.4
  * Author:            Amir Marandi
@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Plugin Constants.
-define( 'LIVE_GOLD_PRICE_VERSION', '1.5.3' );
+define( 'LIVE_GOLD_PRICE_VERSION', '1.5.5' );
 define( 'LIVE_GOLD_PRICE_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'LIVE_GOLD_PRICE_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'LIVE_GOLD_PRICE_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
@@ -137,6 +137,7 @@ class Live_Gold_Price {
 			'lgp_dropdown_dark_mode_fix' => 'live_gold_price_dropdown_dark_mode_fix',
 			'lgp_gold_prices_backup'     => 'live_gold_price_gold_prices_backup',
 			'lgp_last_api_fetch'         => 'live_gold_price_last_api_fetch',
+			'lgp_refresh_interval'       => 'live_gold_price_refresh_interval',
 		);
 
 		foreach ( $legacy_options as $old_key => $new_key ) {
@@ -242,13 +243,22 @@ class Live_Gold_Price {
 }
 
 /**
- * Register 1-minute cron interval.
+ * Register custom cron interval.
  *
  * @param array $schedules WP cron schedules.
  * @return array
  */
 add_filter( 'cron_schedules', 'live_gold_price_add_cron_interval' );
 function live_gold_price_add_cron_interval( $schedules ) {
+	$interval = 60;
+	if ( class_exists( 'Live_Gold_Price_API_Handler' ) ) {
+		$interval = Live_Gold_Price_API_Handler::get_refresh_interval();
+	}
+
+	$schedules['live_gold_price_custom_interval'] = array(
+		'interval' => $interval,
+		'display'  => sprintf( __( 'هر %d ثانیه (افزونه طلا)', 'live-gold-price' ), $interval ),
+	);
 	$schedules['live_gold_price_1_min'] = array(
 		'interval' => 60,
 		'display'  => __( 'هر ۱ دقیقه (افزونه طلا)', 'live-gold-price' ),
@@ -259,6 +269,21 @@ function live_gold_price_add_cron_interval( $schedules ) {
 		'display'  => __( 'هر ۱ دقیقه (افزونه طلا)', 'live-gold-price' ),
 	);
 	return $schedules;
+}
+
+/**
+ * Reschedule cron whenever refresh interval is modified in settings.
+ *
+ * @param mixed $old_val Previous interval value.
+ * @param mixed $new_val New interval value.
+ */
+add_action( 'update_option_live_gold_price_refresh_interval', 'live_gold_price_on_interval_change', 10, 2 );
+function live_gold_price_on_interval_change( $old_val, $new_val ) {
+	$timestamp = wp_next_scheduled( 'live_gold_price_fetch_prices_cron' );
+	if ( $timestamp ) {
+		wp_unschedule_event( $timestamp, 'live_gold_price_fetch_prices_cron' );
+	}
+	wp_schedule_event( time(), 'live_gold_price_custom_interval', 'live_gold_price_fetch_prices_cron' );
 }
 
 // Instantiate plugin singleton.

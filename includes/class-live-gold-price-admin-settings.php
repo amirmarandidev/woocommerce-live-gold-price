@@ -88,6 +88,16 @@ class Live_Gold_Price_Admin_Settings {
 
 		register_setting(
 			'live_gold_price_settings_group',
+			'live_gold_price_refresh_interval',
+			array(
+				'type'              => 'integer',
+				'sanitize_callback' => array( __CLASS__, 'sanitize_refresh_interval' ),
+				'default'           => 60,
+			)
+		);
+
+		register_setting(
+			'live_gold_price_settings_group',
 			'live_gold_price_global_profit',
 			array(
 				'type'              => 'string',
@@ -150,6 +160,14 @@ class Live_Gold_Price_Admin_Settings {
 		);
 
 		add_settings_field(
+			'live_gold_price_refresh_interval',
+			__( 'زمان رفرش قیمت‌ها (ثانیه)', 'live-gold-price' ),
+			array( __CLASS__, 'render_refresh_interval_field' ),
+			'live-gold-price-settings',
+			'live_gold_price_main_section'
+		);
+
+		add_settings_field(
 			'live_gold_price_global_profit',
 			__( 'سود پیش‌فرض فروشنده (%)', 'live-gold-price' ),
 			array( __CLASS__, 'render_global_profit_field' ),
@@ -180,6 +198,20 @@ class Live_Gold_Price_Admin_Settings {
 			'live-gold-price-settings',
 			'live_gold_price_main_section'
 		);
+	}
+
+	/**
+	 * Sanitize refresh interval in seconds with strict minimum of 10 seconds.
+	 *
+	 * @param mixed $value Input value.
+	 * @return int Sanitized interval (>= 10).
+	 */
+	public static function sanitize_refresh_interval( $value ) {
+		$interval = absint( $value );
+		if ( $interval < 10 ) {
+			$interval = 10;
+		}
+		return $interval;
 	}
 
 	/**
@@ -237,6 +269,33 @@ class Live_Gold_Price_Admin_Settings {
 		?>
 		<input type="password" name="live_gold_price_api_key" value="<?php echo esc_attr( $value ); ?>" class="regular-text" style="width: 100%; max-width: 600px;" autocomplete="off">
 		<p class="description"><?php esc_html_e( 'کلید تایید هویت برای وب‌سرویس (به صورت پیش‌فرض کلید رایگان عمومی وب‌سرویس درج شده است)', 'live-gold-price' ); ?></p>
+		<?php
+	}
+
+	/**
+	 * Render Refresh Interval field with rate limit advisory and performance notices.
+	 */
+	public static function render_refresh_interval_field() {
+		$value = Live_Gold_Price_API_Handler::get_refresh_interval();
+		?>
+		<div style="display: flex; align-items: center; gap: 8px;">
+			<input type="number" name="live_gold_price_refresh_interval" value="<?php echo esc_attr( $value ); ?>" min="10" step="1" class="small-text" style="width: 90px; text-align: center; font-weight: bold; font-size: 14px;">
+			<span style="font-weight: 500;"><?php esc_html_e( 'ثانیه', 'live-gold-price' ); ?></span>
+		</div>
+		<p class="description" style="margin-top: 6px;">
+			<?php esc_html_e( 'تعیین بازه زمانی خودکار برای استعلام قیمت جدید از وب‌سرویس و به‌روزرسانی زنده قیمت در صفحه محصولات و فروشگاه (به طور پیش‌فرض ۶۰ ثانیه). حداقل مقدار مجاز ۱۰ ثانیه است.', 'live-gold-price' ); ?>
+		</p>
+		<div style="margin-top: 10px; padding: 12px 16px; background: #fff8e5; border-right: 4px solid #ffb900; border-radius: 4px; max-width: 680px; font-size: 13px; line-height: 1.7; color: #444;">
+			<strong style="color: #b35f00; display: flex; align-items: center; gap: 6px; margin-bottom: 6px; font-size: 13.5px;">
+				⚠️ <?php esc_html_e( 'هشدار مهم در خصوص سقف مصرف و لیمیت وب‌سرویس (API Rate Limit):', 'live-gold-price' ); ?>
+			</strong>
+			<p style="margin: 0 0 6px 0;">
+				<?php esc_html_e( 'لطفاً این رقم را متناسب با سقف مجاز اشتراک وب‌سرویس خود تنظیم فرمایید. برای نمونه در وب‌سرویس brsapi، اشتراک‌های پولی دارای سقف مصرف روزانه مشخص (مثلاً حداکثر ۱۵,۰۰۰ درخواست در روز) هستند. تنظیم این فیلد روی اعداد بسیار پایین (مثلاً ۱۰ یا ۱۵ ثانیه) در سایت‌های پرترافیک و پربازدید می‌تواند سهمیه روزانه شما را به سرعت به اتمام رسانده و وب‌سرویس موقتاً قطع شود.', 'live-gold-price' ); ?>
+			</p>
+			<p style="margin: 0; color: #666; font-size: 12px;">
+				<?php esc_html_e( '💡 سیستم کش هوشمند و پایداری سرعت سایت: حتی با تعیین بازه‌های کوتاه، معماری کش افزونه طوری طراحی شده است که فرآیند استعلام در پس‌زمینه انجام شده و به هیچ عنوان سرعت سایت کاهش پیدا نمی‌کند و قیمت‌ها روی حالت لودینگ معطل نمی‌مانند.', 'live-gold-price' ); ?>
+			</p>
+		</div>
 		<?php
 	}
 
@@ -561,6 +620,7 @@ class Live_Gold_Price_Admin_Settings {
 			'Next Cron Run:          ' . $cron_next,
 			'API Endpoint URL:       ' . get_option( 'live_gold_price_api_url', 'Default' ),
 			'API Key Status:         ' . $masked_key,
+			'Price Refresh Interval: ' . Live_Gold_Price_API_Handler::get_refresh_interval() . ' seconds',
 			'Transient Cache:        ' . $transient_status,
 			'Persistent Backup:      ' . $backup_status,
 			'Last Successful Fetch:  ' . $last_fetch_formatted,

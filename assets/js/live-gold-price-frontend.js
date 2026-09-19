@@ -164,7 +164,13 @@
 			}
 		});
 
-		// Auto refresh every 60 seconds
+		// Dynamic auto refresh based on configured interval (strictly minimum 10 seconds)
+		var refreshSec = parseInt(config.refresh_interval, 10);
+		if (isNaN(refreshSec) || refreshSec < 10) {
+			refreshSec = 60;
+		}
+		var intervalMs = refreshSec * 1000;
+
 		setInterval(function() {
 			var allWrappers = document.querySelectorAll('.live-gold-price-wrapper, .lgp-live-price-wrapper');
 			if (allWrappers.length > 0) {
@@ -181,6 +187,6 @@
 			if (document.querySelector('form.checkout')) {
 				$(document.body).trigger('update_checkout');
 			}
-		}, 60000);
+		}, intervalMs);
 	}
 })();
