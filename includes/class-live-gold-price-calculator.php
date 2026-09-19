@@ -43,11 +43,31 @@ class Live_Gold_Price_Calculator {
 		}
 
 		$prices = Live_Gold_Price_API_Handler::get_prices();
-		if ( empty( $prices ) || ! isset( $prices[ $purity ] ) ) {
-			return false; // Price not available in API data for this purity.
+		if ( empty( $prices ) || ! is_array( $prices ) ) {
+			return false;
 		}
 
-		$live_price_per_unit = floatval( $prices[ $purity ] );
+		$live_price_per_unit = 0.0;
+		if ( isset( $prices[ $purity ] ) ) {
+			$live_price_per_unit = floatval( $prices[ $purity ] );
+		} else {
+			// Resilient lookup: normalize spaces, ZWNJ, and NBSP.
+			$clean_purity = preg_replace( '/\s+/', ' ', str_replace( array( "\xE2\x80\x8C", "\xC2\xA0" ), ' ', $purity ) );
+			$clean_purity = trim( (string) $clean_purity );
+
+			foreach ( $prices as $item_name => $item_val ) {
+				$clean_name = preg_replace( '/\s+/', ' ', str_replace( array( "\xE2\x80\x8C", "\xC2\xA0" ), ' ', $item_name ) );
+				$clean_name = trim( (string) $clean_name );
+				if ( $clean_name === $clean_purity || false !== strpos( $item_name, $purity ) || false !== strpos( $clean_name, $clean_purity ) ) {
+					$live_price_per_unit = floatval( $item_val );
+					break;
+				}
+			}
+		}
+
+		if ( $live_price_per_unit <= 0 ) {
+			return false; // Price not available in API data for this purity.
+		}
 
 		$weight_meta = get_post_meta( $product_id, '_live_gold_price_weight', true );
 		if ( '' === $weight_meta ) {

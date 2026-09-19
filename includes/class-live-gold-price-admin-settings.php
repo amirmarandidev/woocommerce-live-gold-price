@@ -40,9 +40,10 @@ class Live_Gold_Price_Admin_Settings {
 		delete_transient( 'live_gold_price_gold_prices' );
 		delete_transient( 'lgp_gold_prices' );
 
-		Live_Gold_Price_API_Handler::fetch_prices_from_api();
+		$result = Live_Gold_Price_API_Handler::fetch_prices_from_api();
 
-		wp_safe_redirect( admin_url( 'admin.php?page=live-gold-price-settings&updated=1' ) );
+		$param = ( false !== $result ) ? 'updated=1' : 'fetch_error=1';
+		wp_safe_redirect( admin_url( 'admin.php?page=live-gold-price-settings&' . $param ) );
 		exit;
 	}
 
@@ -81,7 +82,7 @@ class Live_Gold_Price_Admin_Settings {
 			array(
 				'type'              => 'string',
 				'sanitize_callback' => 'sanitize_text_field',
-				'default'           => '',
+				'default'           => 'BpPAcAtIbRzRMrUTRN18BePUdbIBQiNr',
 			)
 		);
 
@@ -230,9 +231,12 @@ class Live_Gold_Price_Admin_Settings {
 		if ( '' === $value ) {
 			$value = get_option( 'lgp_api_key', '' );
 		}
+		if ( '' === $value ) {
+			$value = 'BpPAcAtIbRzRMrUTRN18BePUdbIBQiNr';
+		}
 		?>
 		<input type="password" name="live_gold_price_api_key" value="<?php echo esc_attr( $value ); ?>" class="regular-text" style="width: 100%; max-width: 600px;" autocomplete="off">
-		<p class="description"><?php esc_html_e( 'کلید تایید هویت برای وب‌سرویس', 'live-gold-price' ); ?></p>
+		<p class="description"><?php esc_html_e( 'کلید تایید هویت برای وب‌سرویس (به صورت پیش‌فرض کلید رایگان عمومی وب‌سرویس درج شده است)', 'live-gold-price' ); ?></p>
 		<?php
 	}
 
@@ -330,6 +334,15 @@ class Live_Gold_Price_Admin_Settings {
 					</a>
 				</div>
 			</div>
+			<?php if ( isset( $_GET['fetch_error'] ) ) : ?>
+				<div class="notice notice-error is-dismissible">
+					<p><?php esc_html_e( 'خطا در ارتباط با وب‌سرویس یا دریافت قیمت‌ها. لطفاً اتصال اینترنت سرور یا کلید وب‌سرویس را بررسی نمایید.', 'live-gold-price' ); ?></p>
+				</div>
+			<?php elseif ( isset( $_GET['updated'] ) ) : ?>
+				<div class="notice notice-success is-dismissible">
+					<p><?php esc_html_e( 'قیمت‌های لحظه‌ای با موفقیت از وب‌سرویس دریافت و به‌روزرسانی شدند.', 'live-gold-price' ); ?></p>
+				</div>
+			<?php endif; ?>
 			<form action="options.php" method="post">
 				<?php
 				settings_fields( 'live_gold_price_settings_group' );

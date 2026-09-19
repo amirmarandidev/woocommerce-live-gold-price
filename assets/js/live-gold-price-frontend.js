@@ -17,7 +17,7 @@
 		}
 
 		var separator = config.rest_url.indexOf('?') === -1 ? '?' : '&';
-		var url = config.rest_url + separator + 'ids=' + encodeURIComponent(productIds.join(','));
+		var url = config.rest_url + separator + 'ids=' + productIds.join(',');
 
 		fetch(url, {
 			method: 'GET',
@@ -37,8 +37,11 @@
 				callback(data);
 			}
 		})
-		.catch(function() {
-			// Fail silently in production
+		.catch(function(err) {
+			// Non-blocking console notice for troubleshooting
+			if (window.console && console.warn) {
+				console.warn('Live Gold Price sync notice:', err.message);
+			}
 		});
 	}
 
@@ -55,7 +58,7 @@
 		}
 	}
 
-	document.addEventListener('DOMContentLoaded', function() {
+	function initLivePrices() {
 		var priceWrappers = document.querySelectorAll('.live-gold-price-wrapper, .lgp-live-price-wrapper');
 		if (priceWrappers.length === 0) {
 			return;
@@ -74,9 +77,18 @@
 				updateWrappers(priceWrappers, data);
 			});
 		}
-	});
+	}
+
+	// Trigger immediately if DOM is already ready, or listen to DOMContentLoaded
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', initLivePrices);
+	} else {
+		initLivePrices();
+	}
 
 	if (typeof jQuery !== 'undefined') {
+		var $ = jQuery;
+
 		function fetchAndReplaceLivePrices() {
 			var newWrappers = document.querySelectorAll('.live-gold-price-wrapper:not(.live-gold-price-updated), .lgp-live-price-wrapper:not(.live-gold-price-updated)');
 			if (newWrappers.length === 0) {
@@ -96,12 +108,13 @@
 
 			if (newIds.length > 0) {
 				fetchProductPrices(newIds, function(data) {
-					updateWrappers(newWrappers, data);
+					var allWrappers = document.querySelectorAll('.live-gold-price-wrapper, .lgp-live-price-wrapper');
+					updateWrappers(allWrappers, data);
 				});
 			}
 		}
 
-		jQuery(document).on('ajaxComplete', function(event, xhr, settings) {
+		$(document).on('ajaxComplete', function(event, xhr, settings) {
 			if (settings && settings.url && (settings.url.indexOf('admin-ajax.php') !== -1 || settings.url.indexOf('wc-ajax') !== -1)) {
 				setTimeout(fetchAndReplaceLivePrices, 200);
 			}
@@ -109,7 +122,7 @@
 
 		var originalTopPrice = null;
 
-		jQuery(document).on('show_variation', function(event, variation) {
+		$(document).on('show_variation', function(event, variation) {
 			if (variation && variation.variation_id) {
 				var vid = variation.variation_id;
 				var container = document.querySelector('.woocommerce-variation-price');
@@ -142,7 +155,7 @@
 			}
 		});
 
-		jQuery(document).on('hide_variation', function() {
+		$(document).on('hide_variation', function() {
 			if (originalTopPrice) {
 				var topPriceContainer = document.querySelector('div.summary p.price');
 				if (topPriceContainer) {
@@ -163,10 +176,10 @@
 			}
 
 			if (document.querySelector('.woocommerce-cart-form')) {
-				jQuery(document.body).trigger('wc_update_cart');
+				$(document.body).trigger('wc_update_cart');
 			}
 			if (document.querySelector('form.checkout')) {
-				jQuery(document.body).trigger('update_checkout');
+				$(document.body).trigger('update_checkout');
 			}
 		}, 60000);
 	}

@@ -72,7 +72,7 @@ class Live_Gold_Price_Frontend {
 		wp_enqueue_script(
 			'live-gold-price-frontend',
 			LIVE_GOLD_PRICE_PLUGIN_URL . 'assets/js/live-gold-price-frontend.js',
-			array(),
+			array( 'jquery' ),
 			LIVE_GOLD_PRICE_VERSION,
 			true
 		);
@@ -225,16 +225,6 @@ class Live_Gold_Price_Frontend {
 				'methods'             => WP_REST_Server::READABLE,
 				'callback'            => array( __CLASS__, 'rest_get_prices' ),
 				'permission_callback' => '__return_true',
-				'args'                => array(
-					'ids' => array(
-						'required'          => true,
-						'type'              => 'string',
-						'sanitize_callback' => 'sanitize_text_field',
-						'validate_callback' => function( $param ) {
-							return is_string( $param ) && '' !== trim( $param );
-						},
-					),
-				),
 			)
 		);
 
@@ -246,13 +236,6 @@ class Live_Gold_Price_Frontend {
 				'methods'             => WP_REST_Server::READABLE,
 				'callback'            => array( __CLASS__, 'rest_get_prices' ),
 				'permission_callback' => '__return_true',
-				'args'                => array(
-					'ids' => array(
-						'required'          => true,
-						'type'              => 'string',
-						'sanitize_callback' => 'sanitize_text_field',
-					),
-				),
 			)
 		);
 	}
@@ -269,10 +252,18 @@ class Live_Gold_Price_Frontend {
 			return new WP_Error( 'missing_ids', esc_html__( 'No product IDs provided.', 'live-gold-price' ), array( 'status' => 400 ) );
 		}
 
-		$ids_param = sanitize_text_field( wp_unslash( $ids_param ) );
-		$ids       = explode( ',', $ids_param );
-		$ids       = array_map( 'absint', $ids );
-		$ids       = array_unique( array_filter( $ids ) );
+		if ( is_array( $ids_param ) ) {
+			$ids = array_map( 'absint', $ids_param );
+		} else {
+			$ids_param = urldecode( (string) $ids_param );
+			$ids       = explode( ',', $ids_param );
+			$ids       = array_map( 'absint', $ids );
+		}
+		$ids = array_unique( array_filter( $ids ) );
+
+		if ( empty( $ids ) ) {
+			return new WP_Error( 'invalid_ids', esc_html__( 'Invalid product IDs.', 'live-gold-price' ), array( 'status' => 400 ) );
+		}
 
 		$response_data = array();
 

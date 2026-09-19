@@ -99,6 +99,11 @@ class Live_Gold_Price {
 		// Run version check and automatic database migration routine.
 		$this->check_version();
 
+		// Ensure cron is scheduled (even after direct plugin update without reactivation).
+		if ( ! wp_next_scheduled( 'live_gold_price_fetch_prices_cron' ) && ! wp_next_scheduled( 'lgp_fetch_prices_cron' ) ) {
+			wp_schedule_event( time(), 'live_gold_price_1_min', 'live_gold_price_fetch_prices_cron' );
+		}
+
 		$this->includes();
 		$this->init_classes();
 	}
@@ -139,6 +144,11 @@ class Live_Gold_Price {
 			if ( null !== $old_val && false === get_option( $new_key, false ) ) {
 				update_option( $new_key, $old_val );
 			}
+		}
+
+		// Ensure fallback default API key if both are empty.
+		if ( empty( get_option( 'live_gold_price_api_key', '' ) ) && empty( get_option( 'lgp_api_key', '' ) ) ) {
+			update_option( 'live_gold_price_api_key', 'BpPAcAtIbRzRMrUTRN18BePUdbIBQiNr' );
 		}
 
 		// Migrate transient cache if present.

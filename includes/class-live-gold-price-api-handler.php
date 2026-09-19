@@ -34,17 +34,25 @@ class Live_Gold_Price_API_Handler {
 		}
 
 		if ( false === $prices ) {
-			// Transient expired. Return persistent backup immediately to prevent frontend blocking.
-			$prices = get_option( 'live_gold_price_gold_prices_backup' );
+			// If transient expired, check when the API was last queried.
+			$last_fetch = (int) get_option( 'live_gold_price_last_api_fetch', 0 );
+			if ( ! $last_fetch ) {
+				$last_fetch = (int) get_option( 'lgp_last_api_fetch', 0 );
+			}
 
-			if ( empty( $prices ) ) {
-				// Backward compatibility: check legacy backup option.
-				$prices = get_option( 'lgp_gold_prices_backup' );
+			// If never fetched or more than 60 seconds have elapsed, fetch live from API.
+			if ( 0 === $last_fetch || ( time() - $last_fetch ) >= 60 ) {
+				$prices = self::fetch_prices_from_api();
 			}
 
 			if ( empty( $prices ) ) {
-				// First run ever without any cache or backup: fetch synchronously.
-				$prices = self::fetch_prices_from_api();
+				// Fallback to persistent backup option to avoid blocking frontend.
+				$prices = get_option( 'live_gold_price_gold_prices_backup' );
+
+				if ( empty( $prices ) ) {
+					// Backward compatibility: check legacy backup option.
+					$prices = get_option( 'lgp_gold_prices_backup' );
+				}
 			}
 		}
 
@@ -57,27 +65,34 @@ class Live_Gold_Price_API_Handler {
 	 * @return array|false Parsed prices or false on failure.
 	 */
 	public static function fetch_prices_from_api() {
-		$api_key = get_option( 'live_gold_price_api_key', '' );
+		$api_key = trim( (string) get_option( 'live_gold_price_api_key', '' ) );
 		if ( empty( $api_key ) ) {
-			$api_key = get_option( 'lgp_api_key', '' );
+			$api_key = trim( (string) get_option( 'lgp_api_key', '' ) );
 		}
-
+		// Fallback to public working default key if unconfigured.
 		if ( empty( $api_key ) ) {
-			return false;
+			$api_key = 'BpPAcAtIbRzRMrUTRN18BePUdbIBQiNr';
 		}
 
 		$api_url = get_option( 'live_gold_price_api_url', '' );
 		if ( empty( $api_url ) ) {
-			$api_url = get_option( 'lgp_api_url', 'https://api.brsapi.ir/Market/Gold_Currency.php' );
+			$api_url = get_option( 'lgp_api_url', '' );
+		}
+		if ( empty( $api_url ) ) {
+			$api_url = 'https://api.brsapi.ir/Market/Gold_Currency.php';
 		}
 
-		$url = add_query_arg( 'key', rawurlencode( $api_key ), $api_url );
+		// Clean any existing key parameter to avoid query string corruption.
+		$clean_url = remove_query_arg( 'key', $api_url );
+		$url       = add_query_arg( 'key', $api_key, $clean_url );
 
 		$response = wp_remote_get(
-			esc_url_raw( $url ),
+			$url,
 			array(
-				'timeout' => 15,
-				'limit'   => 50000, // Prevent OOM if API returns unexpected large payload
+				'timeout'    => 15,
+				'sslverify'  => false, // Prevent SSL handshake failures on servers with outdated local CA bundles
+				'limit'      => 100000,
+				'user-agent' => 'LiveGoldPrice/' . LIVE_GOLD_PRICE_VERSION . '; ' . home_url(),
 			)
 		);
 
@@ -85,8 +100,8 @@ class Live_Gold_Price_API_Handler {
 			return self::handle_api_failure();
 		}
 
-		$status_code = wp_remote_retrieve_response_code( $response );
-		if ( 200 !== $status_code ) {
+		$status_code = (int) wp_remote_retrieve_response_code( $response );
+		if ( 200 !== $status_code && 0 !== $status_code ) {
 			return self::handle_api_failure();
 		}
 
@@ -103,12 +118,21 @@ class Live_Gold_Price_API_Handler {
 
 		$parsed_prices = array();
 
-		// Parse the gold items (e.g. "طلای 18 عیار" and coins).
+		// Parse gold and coin rates.
 		foreach ( $data['gold'] as $item ) {
 			if ( is_array( $item ) && isset( $item['name'] ) && isset( $item['price'] ) ) {
-				$name = sanitize_text_field( trim( (string) $item['name'] ) );
+				$name = trim( (string) $item['name'] );
 				if ( '' !== $name ) {
-					$parsed_prices[ $name ] = floatval( $item['price'] );
+					$price = floatval( $item['price'] );
+					$parsed_prices[ $name ] = $price;
+
+					// Normalize spaces (replace ZWNJ and NBSP with standard space) for robust matching.
+					$normalized_name = str_replace( array( "\xE2\x80\x8C", "\xC2\xA0" ), ' ', $name );
+					$normalized_name = preg_replace( '/\s+/', ' ', $normalized_name );
+					$normalized_name = trim( $normalized_name );
+					if ( '' !== $normalized_name && $normalized_name !== $name ) {
+						$parsed_prices[ $normalized_name ] = $price;
+					}
 				}
 			}
 		}
@@ -119,9 +143,13 @@ class Live_Gold_Price_API_Handler {
 
 		// Store in transient for 55 seconds (to align with 1-minute cron).
 		set_transient( 'live_gold_price_gold_prices', $parsed_prices, 55 );
+		set_transient( 'lgp_gold_prices', $parsed_prices, 55 );
+
 		// Store backup that never expires.
 		update_option( 'live_gold_price_gold_prices_backup', $parsed_prices );
+		update_option( 'lgp_gold_prices_backup', $parsed_prices );
 		update_option( 'live_gold_price_last_api_fetch', time() );
+		update_option( 'lgp_last_api_fetch', time() );
 
 		// Increment successful fetches count for qualification tracking.
 		$fetch_count = (int) get_option( 'live_gold_price_successful_fetches_count', 0 );
@@ -144,6 +172,7 @@ class Live_Gold_Price_API_Handler {
 		if ( ! empty( $old_prices ) && is_array( $old_prices ) ) {
 			// Restore transient with old data to avoid spamming a failing external API.
 			set_transient( 'live_gold_price_gold_prices', $old_prices, 55 );
+			set_transient( 'lgp_gold_prices', $old_prices, 55 );
 			return $old_prices;
 		}
 
